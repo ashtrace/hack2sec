@@ -1,0 +1,23 @@
+{
+  "name": "hack2sec",
+  "version": "1.0.0",
+  "description": "Hack2Sec",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashtrace/hack2sec.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashtrace/hack2sec/issues"
+  },
+  "homepage": "https://github.com/ashtrace/hack2sec#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

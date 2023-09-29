@@ -5,7 +5,8 @@ const cors      = require('cors');
 const corsOptions = require('./config/corsOptions');
 
 /* Set-up CORS */
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 /* built-in middleware to handle JSON data*/
 app.use(express.json());

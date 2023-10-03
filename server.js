@@ -26,6 +26,7 @@ app.use('/', require('./routes/root'));
 app.use('/api/register', require('./routes/api/register'));
 app.use('/api/login', require('./routes/api/login'));
 app.use('/api/refresh', require('./routes/api/refresh'));
+app.use('/api/logout', require('./routes/api/logout'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

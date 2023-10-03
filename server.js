@@ -4,10 +4,13 @@ const path          = require('path');
 const cors          = require('cors');
 const corsOptions   = require('./config/corsOptions');
 const cookieParser  = require('cookie-parser');
+const credentials   = require('./middleware/credentials');
+
+/* Middleware to allow CORS for login */
+app.use(credentials);
 
 /* Set-up CORS */
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 
 /* Middleware to handle JSON data*/
 app.use(express.json());

@@ -18,9 +18,6 @@ const handleRefreshToken = (req, res) => {
         return res.sendStatus(401);
     }
 
-    /* Debug: Log current refresh token JWT */
-    console.log(cookies.jwt);
-
     const refreshToken = cookies.jwt;
 
     const foundUser = usersDB.users.find(person => person.refreshToken === refreshToken);
@@ -29,12 +26,19 @@ const handleRefreshToken = (req, res) => {
         return res.sendStatus(403);
     }
 
+    const roles = Object.values(foundUser.roles);
+
     /* Validate refresh token */
     jwt.verify(refreshToken, process.env.REFERSH_TOKEN_SECRET, (err, decoded) => {
         if (err || foundUser.username !== decoded.username) {
             return res.sendStatus(403);
         }
-        const accessToken = jwt.sign({ "username": decoded.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
+        const accessToken = jwt.sign(            {
+            "UserInfo": {
+                "username":foundUser.username,
+                "roles": roles
+            }
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
         res.json({ accessToken });
     });
 }

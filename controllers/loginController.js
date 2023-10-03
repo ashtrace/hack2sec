@@ -33,9 +33,17 @@ const handleLogin = async (req, res) => {
     const match = await bcrypt.compare(pwd, foundUser.password);
 
     if (match) {
+        /* Derive RBAC values for the user */
+        roles = Object.values(foundUser.roles);
+
         /* Create JWT access token for the user session */
         const accessToken = jwt.sign(
-            { "username":foundUser.username },
+            {
+                "UserInfo": {
+                    "username":foundUser.username,
+                    "roles": roles
+                }
+            },
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '5m' }
         );
@@ -53,8 +61,10 @@ const handleLogin = async (req, res) => {
         usersDB.setUsers([...otherUsers, currentUser]);
         await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users));
 
-        /* Send refersh token to user as cookie */
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 26 * 60 * 60 * 1000 })
+        /* Send refersh token to user as cookie.
+         * TODO: Add SameSite configuration for front-end
+         */
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
 
         /* Send access token to user in response body */
         res.json({ accessToken });

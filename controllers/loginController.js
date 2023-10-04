@@ -1,15 +1,6 @@
-/* Simulating users database using json file, until MongoDB is UP */
-const usersDB = {
-    users: require('../model/users.json'),
-    setUsers: function (data) {
-        this.users = data
-    }
-}
-
-const bcrypt        = require('bcrypt');
-const jwt           = require('jsonwebtoken');
-const fsPromises    = require('fs').promises;
-const path          = require('path');
+const User      = require('../model/User');
+const bcrypt    = require('bcrypt');
+const jwt       = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
     /* De-serialze username and password */
@@ -20,7 +11,7 @@ const handleLogin = async (req, res) => {
     }
 
     /* Check if username exists */
-    const foundUser = usersDB.users.find(person => person.username === user);
+    const foundUser = await User.findOne({ username: user }).exec();
 
     if (!foundUser) {
         /* HTTP 401: Unauthorized */
@@ -54,10 +45,11 @@ const handleLogin = async (req, res) => {
         );
 
         /* Store the refresh token in DB */
-        const otherUsers = usersDB.users.filter(person => person.username !== foundUser.username);
-        const currentUser = { ...foundUser, refreshToken };
-        usersDB.setUsers([...otherUsers, currentUser]);
-        await fsPromises.writeFile(path.join(__dirname, '..', 'model', 'users.json'), JSON.stringify(usersDB.users));
+        foundUser.refreshToken = refreshToken;
+        const result = await foundUser.save();
+
+        /* Debug: log the refresh token */
+        console.log(result)
 
         /* Send refersh token to user as cookie.
          * TODO: Add SameSite configuration for front-end

@@ -3,7 +3,7 @@
 const express       = require('express');
 const router        = express.Router();
 const path          = require('path')
-const verifyJWT     = require('../middleware/verfiyJWT');
+const verifyJWT     = require('../middleware/verifyJWT');
 const ROLES_LIST    = require('../config/rolesList');
 const verfiyRoles   = require('../middleware/verifyRoles');
 

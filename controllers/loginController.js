@@ -51,7 +51,7 @@ const handleLogin = async (req, res) => {
         /* Create JWT refresh token for the user session */
         const refreshToken = jwt.sign(
             { "username":foundUser.username },
-            process.env.REFERSH_TOKEN_SECRET,
+            process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
         );
 

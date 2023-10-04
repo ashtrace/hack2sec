@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express       = require('express');
 const app           = express();
 const path          = require('path');
@@ -5,6 +7,11 @@ const cors          = require('cors');
 const corsOptions   = require('./config/corsOptions');
 const cookieParser  = require('cookie-parser');
 const credentials   = require('./middleware/credentials');
+const mongoose      = require('mongoose');
+const connectDB     = require('./config/dbCon');
+
+/* Connect to mongose DB */
+connectDB();
 
 /* Middleware to allow CORS for login */
 app.use(credentials);
@@ -33,6 +40,9 @@ app.use('/api/logout', require('./routes/api/logout'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');
-})
+});
 
-app.listen(1337, () => console.log('Listening on port 1337'))
+mongoose.connection.once('open', () => {
+    console.log('Connected to MongoDB');
+    app.listen(1337, () => console.log('Listening on port 1337'))
+});

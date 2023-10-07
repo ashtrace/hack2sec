@@ -9,6 +9,7 @@ const cookieParser  = require('cookie-parser');
 const credentials   = require('./middleware/credentials');
 const mongoose      = require('mongoose');
 const connectDB     = require('./config/dbCon');
+const verifyJWT = require('./middleware/verifyJWT');
 
 /* Connect to mongose DB */
 connectDB();
@@ -37,6 +38,10 @@ app.use('/api/register', require('./routes/api/register'));
 app.use('/api/login', require('./routes/api/login'));
 app.use('/api/refresh', require('./routes/api/refresh'));
 app.use('/api/logout', require('./routes/api/logout'));
+
+/* Setup Protected Routes */
+app.use(verifyJWT);
+app.use('/api/challenges', require('./routes/api/challenges'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

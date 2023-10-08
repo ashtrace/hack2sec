@@ -42,6 +42,7 @@ app.use('/api/logout', require('./routes/api/logout'));
 /* Setup Protected Routes */
 app.use(verifyJWT);
 app.use('/api/challenges', require('./routes/api/challenges'));
+app.use('/api/subjects', require('./routes/api/subjects'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

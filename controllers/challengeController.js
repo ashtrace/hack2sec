@@ -1,23 +1,26 @@
 const Challenge = require('../model/Challenge');
+const bcrypt    = require('bcrypt');
 
 const getAllChallenges = async (req, res) => {
     const challenges = await Challenge.find();
     if (!challenges) {
-        return res.status(204).json({ "message":"No challenges found." });
+        return res.status(404).json({ "message": "No challenges found." });
     }
     res.json(challenges);
 }
 
 const createNewChallenge = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.points || !req?.body?.category) {
-        return res.status(400).json({ "message": "Name, points and category are required." });
+    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag) {
+        return res.status(400).json({ "message": "Name, points, category and flag are required." });
     }
 
     try {
+        hashedFlag = await bcrypt.hash(req.body.flag, 10);
         const result = await Challenge.create({
             name: req.body.name,
             points: req.body.points,
-            category: req.body.category
+            category: req.body.category,
+            flag: hashedFlag
         });
 
         res.status(201).json(result);
@@ -28,7 +31,7 @@ const createNewChallenge = async (req, res) => {
 
 const updateChallege = async (req, res) => {
     if (!req?.body?.id) {
-        return res.status(400).json({ "message": "ID parameter required."});
+        return res.status(400).json({ "message": "ID parameter required." });
     }
 
     const challenge = await Challenge.findOne({ _id: req.body.id }).exec();

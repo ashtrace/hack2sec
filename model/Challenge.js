@@ -14,6 +14,10 @@ const challengeSchema = new Schema({
         type: String,
         requried: true,
     },
+    flag: {
+        type: String,
+        required: true,
+    },
     description: String,
     url: String,
     hint: String,

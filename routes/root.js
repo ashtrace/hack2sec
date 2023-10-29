@@ -12,6 +12,11 @@ router.route('^/$|index(.html)?')
         res.sendFile(path.join(__dirname, '..', 'views', 'index.html'));
     });
 
+router.route('/login(.html)?')
+    .get((req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'views', 'login.html'));
+    });
+
 router.route('/dashboard(.html)?')
     .get(verifyJWT, (req, res) => {
         res.sendFile(path.join(__dirname, '..', 'views', 'dashboard.html'));

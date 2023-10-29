@@ -18,7 +18,8 @@ connectDB();
 app.use(credentials);
 
 /* Set-up CORS */
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 /* Middleware to handle JSON data*/
 app.use(express.json());
@@ -43,6 +44,8 @@ app.use('/api/logout', require('./routes/api/logout'));
 app.use(verifyJWT);
 app.use('/api/challenges', require('./routes/api/challenges'));
 app.use('/api/subjects', require('./routes/api/subjects'));
+app.use('/api/upload', require('./routes/api/upload'));
+app.use('/api/download', require('./routes/api/download'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

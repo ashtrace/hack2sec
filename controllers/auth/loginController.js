@@ -15,7 +15,7 @@ const handleLogin = async (req, res) => {
 
     if (!foundUser) {
         /* HTTP 401: Unauthorized */
-        return res.status(401).json( { 'message': 'Incorrect username or password.'});
+        return res.status(401).json({ 'message': 'Incorrect username or password.'});
     }
 
     /* Validate password */

@@ -43,9 +43,10 @@ app.use('/api/logout', require('./routes/api/auth/logout'));
 /* Setup Protected Routes */
 app.use(verifyJWT);
 app.use('/api/challenges', require('./routes/api/challenges/challenges'));
-app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/challenges/upload', require('./routes/api/challenges/upload'));
 app.use('/api/challenges/download', require('./routes/api/challenges/download'));
+app.use('/api/challenges/validate', require('./routes/api/challenges/validate'));
+app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));
 
 app.all('*', (req, res) => {

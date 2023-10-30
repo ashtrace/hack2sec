@@ -23,8 +23,9 @@ const handleSubjectEnrollment = async (req, res) => {
         
         return res.json(result);
     } catch (err) {
-        res.status(500).json({ 'message': err.message });
+        console.error(err);
+        return res.sendStatus(500);
     }
 }
 
-module.exports = {handleSubjectEnrollment };
+module.exports = { handleSubjectEnrollment };

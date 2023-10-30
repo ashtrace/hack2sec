@@ -14,7 +14,16 @@ const userSchema = new Schema({
         type: Number,
         default: 1
     },
+    points: {
+        type: Number,
+        default: 0
+    },
     subjects: [
+        {
+            type: String
+        }
+    ],
+    solved_challenges: [
         {
             type: String
         }

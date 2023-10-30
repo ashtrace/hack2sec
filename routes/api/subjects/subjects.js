@@ -1,8 +1,8 @@
 const express           = require('express');
 const router            = express.Router();
-const subjectController = require('../../controllers/subjectController');
-const ROLES_LIST        = require('../../config/rolesList');
-const verifyRoles       = require('../../middleware/verifyRoles');
+const subjectController = require('../../../controllers/subjects/subjectController');
+const ROLES_LIST        = require('../../../config/rolesList');
+const verifyRoles       = require('../../../middleware/verifyRoles');
 
 router.route('/')
     .get(subjectController.getAllSubjects)

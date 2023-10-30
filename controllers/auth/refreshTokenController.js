@@ -1,4 +1,4 @@
-const User  = require('../model/User');
+const User  = require('../../model/User');
 const jwt   = require('jsonwebtoken');
 
 const handleRefreshToken = async (req, res) => {
@@ -23,11 +23,11 @@ const handleRefreshToken = async (req, res) => {
             return res.sendStatus(403);
         }
 
-        const roles = Object.values(foundUser.roles);
+        const role = foundUser.role;
         const accessToken = jwt.sign({
             "UserInfo": {
                 "username":foundUser.username,
-                "roles": roles
+                "role": role
             }
         }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5m' });
         res.json({ accessToken });

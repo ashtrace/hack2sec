@@ -1,4 +1,4 @@
-const User      = require('../model/User');
+const User      = require('../../model/User');
 const bcrypt    = require('bcrypt'); /* To hash passwords */
 
 const handleNewUser = async (req, res) => {

@@ -12,16 +12,19 @@ const challengeSchema = new Schema({
     },
     category: {
         type: String,
-        requried: true,
+        requried: true
     },
     flag: {
         type: String,
-        required: true,
+        required: true
+    },
+    subject_id: {
+        type: String,
+        required: true
     },
     description: String,
     url: String,
     hint: String,
-    subject: String,
 });
 
 module.exports = mongoose.model('Challenge', challengeSchema);

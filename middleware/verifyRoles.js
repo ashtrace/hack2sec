@@ -1,19 +1,19 @@
 const verfiyRoles = (...allowedRoles) => {
     return (req, res, next) => {
-        if (!req?.roles) {
+        if (!req?.role) {
             /* Request does not exist, or it does not have associated role */
             return sendStatus(401);
         }
 
         const rolesArray = [...allowedRoles];
 
-        /* Debug: log roles */
-        console.log(req.roles);
+        /* Debug: log role */
+        console.log(req.role);
 
-        const result = req.roles.map(role => rolesArray.includes(role)).find(val => val === true);
+        const result = rolesArray.includes(req.role);
 
         if (!result) {
-            /* If no roles exist */
+            /* If no role exist */
             return res.sendStatus(401);
         }
 

@@ -1,4 +1,4 @@
-const Challenge = require('../model/Challenge');
+const Challenge = require('../../model/Challenge');
 const bcrypt    = require('bcrypt');
 
 const getAllChallenges = async (req, res) => {
@@ -10,8 +10,8 @@ const getAllChallenges = async (req, res) => {
 }
 
 const createNewChallenge = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag) {
-        return res.status(400).json({ "message": "Name, points, category and flag are required." });
+    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subject_id) {
+        return res.status(400).json({ "message": "Name, points, category, flag and subject_id are required." });
     }
 
     try {
@@ -20,7 +20,8 @@ const createNewChallenge = async (req, res) => {
             name: req.body.name,
             points: req.body.points,
             category: req.body.category,
-            flag: hashedFlag
+            flag: hashedFlag,
+            subject_id: req.body.subject_id
         });
 
         res.status(201).json(result);

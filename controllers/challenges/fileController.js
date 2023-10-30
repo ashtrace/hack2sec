@@ -1,4 +1,4 @@
-const minioClient = require('../config/fsCon');
+const minioClient = require('../../config/fsCon');
 
 const handleFileUpload = (req, res) => {
     const files = req.files;

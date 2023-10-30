@@ -1,4 +1,4 @@
-const User      = require('../model/User');
+const User      = require('../../model/User');
 const bcrypt    = require('bcrypt');
 const jwt       = require('jsonwebtoken');
 
@@ -23,14 +23,14 @@ const handleLogin = async (req, res) => {
 
     if (match) {
         /* Derive RBAC values for the user */
-        roles = Object.values(foundUser.roles);
+        role = foundUser.role;
 
         /* Create JWT access token for the user session */
         const accessToken = jwt.sign(
             {
                 "UserInfo": {
                     "username":foundUser.username,
-                    "roles": roles
+                    "role": role
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,

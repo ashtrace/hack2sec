@@ -35,17 +35,18 @@ app.use(express.static('./static'));
 
 /* Setup Routes */
 app.use('/', require('./routes/root'));
-app.use('/api/register', require('./routes/api/register'));
-app.use('/api/login', require('./routes/api/login'));
-app.use('/api/refresh', require('./routes/api/refresh'));
-app.use('/api/logout', require('./routes/api/logout'));
+app.use('/api/register', require('./routes/api/auth/register'));
+app.use('/api/login', require('./routes/api/auth/login'));
+app.use('/api/refresh', require('./routes/api/auth/refresh'));
+app.use('/api/logout', require('./routes/api/auth/logout'));
 
 /* Setup Protected Routes */
 app.use(verifyJWT);
-app.use('/api/challenges', require('./routes/api/challenges'));
-app.use('/api/subjects', require('./routes/api/subjects'));
-app.use('/api/upload', require('./routes/api/upload'));
-app.use('/api/download', require('./routes/api/download'));
+app.use('/api/challenges', require('./routes/api/challenges/challenges'));
+app.use('/api/subjects', require('./routes/api/subjects/subjects'));
+app.use('/api/challenges/upload', require('./routes/api/challenges/upload'));
+app.use('/api/challenges/download', require('./routes/api/challenges/download'));
+app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

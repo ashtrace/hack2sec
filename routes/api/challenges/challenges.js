@@ -1,8 +1,8 @@
 const express               = require('express');
 const router                = express.Router();
-const challengeController   = require('../../controllers/challengeController');
-const ROLES_LIST            = require('../../config/rolesList');
-const verifyRoles           = require('../../middleware/verifyRoles');
+const challengeController   = require('../../../controllers/challenges/challengeController');
+const ROLES_LIST            = require('../../../config/rolesList');
+const verifyRoles           = require('../../../middleware/verifyRoles');
 
 router.route('/')
     .get(challengeController.getAllChallenges)

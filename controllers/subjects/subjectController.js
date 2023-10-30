@@ -1,4 +1,4 @@
-const Subject = require('../model/Subject');
+const Subject = require('../../model/Subject');
 
 const getAllSubjects = async (req, res) => {
     const subjects = await Subject.find();
@@ -9,14 +9,20 @@ const getAllSubjects = async (req, res) => {
 }
 
 const createNewSubject = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.code) {
+    if (!req?.body?.name || !req?.body?.subject_code) {
         return res.status(400).json({ "message": "Name and subject code are required." });
+    }
+
+    const duplicate = await Subject.findOne({ subject_code: req.body.subject_code }).exec();
+    if (duplicate) {
+        /* HTTP 409: Conflict */
+        return res.sendStatus(409);
     }
 
     try {
         const result = await Subject.create({
             name: req.body.name,
-            code: req.body.code,
+            subject_code: req.body.subject_code,
             syllabus: req.body.syllabus || null
         });
         
@@ -40,8 +46,8 @@ const updateSubject = async (req, res) => {
     if (req.body?.name) {
         subject.name = req.body.name;
     }
-    if (req.body?.code) {
-        subject.code = req.body.code;
+    if (req.body?.subject_code) {
+        subject.subject_code = req.body.subject_code;
     }
     if (req.body?.syllabus) {
         subject.syllabus = req.body.syllabus;

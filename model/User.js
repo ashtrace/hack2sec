@@ -10,14 +10,15 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    roles: {
-        User: {
-            type: Number,
-            default: 1
-        },
-        Faculty: Number,
-        Admin: Number
+    role: {
+        type: Number,
+        default: 1
     },
+    subjects: [
+        {
+            type: String
+        }
+    ],
     refreshToken: String
 });
 

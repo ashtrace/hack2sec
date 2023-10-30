@@ -47,7 +47,7 @@
 
             accessToken = localStorage.getItem('accessToken');
             
-            const response = await fetch('http://127.0.0.1:1337/api/upload', {
+            const response = await fetch('http://127.0.0.1:1337/api/challenges/upload', {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 },

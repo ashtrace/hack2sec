@@ -18,7 +18,7 @@ const challengeSchema = new Schema({
         type: String,
         required: true
     },
-    subject_id: {
+    subjectId: {
         type: String,
         required: true
     },

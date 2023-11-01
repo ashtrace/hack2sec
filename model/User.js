@@ -11,8 +11,8 @@ const userSchema = new Schema({
         required: true
     },
     role: {
-        type: Number,
-        default: 1
+        type: String,
+        default: process.env.RBAC_USER_ID
     },
     points: {
         type: Number,
@@ -23,7 +23,7 @@ const userSchema = new Schema({
             type: String
         }
     ],
-    solved_challenges: [
+    solvedChallenges: [
         {
             type: String
         }

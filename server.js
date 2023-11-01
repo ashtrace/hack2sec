@@ -9,7 +9,7 @@ const cookieParser  = require('cookie-parser');
 const credentials   = require('./middleware/credentials');
 const mongoose      = require('mongoose');
 const connectDB     = require('./config/dbCon');
-const verifyJWT = require('./middleware/verifyJWT');
+const verifyJWT     = require('./middleware/verifyJWT');
 
 /* Connect to mongose DB */
 connectDB();

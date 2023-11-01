@@ -22,18 +22,44 @@ const handleFileUpload = (req, res) => {
 
 const handleFileDownload = (req, res) => {
     const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
-    const objectName = req.params.filename;
-  
-    minioClient.getObject(bucketName, objectName, (error, dataStream) => {
-      if (error) {
-        console.error(error);
-        return res.status(404).send('File not found.');
-      }
+    const objectEtag = req.params.etag;
+    
+    let found = false;
 
-      res.setHeader('Content-Type', 'application/octet-stream');
-      res.setHeader('Content-Disposition', `attachment; filename="${objectName}"`);
-      dataStream.pipe(res);
-    })
+    const stream = minioClient.listObjects(bucketName, '', false);
+
+    stream.on('error', (err) => {
+        /* Debug: log error in listing bucket contents */
+        console.error(err);
+        return res.status(500).json({ status: 'Failed', message: 'Bucket listing failed.'});
+    });
+
+    stream.on('data', (object) => {
+        if (found) {
+            return;
+        }
+
+        if (object.etag.toString() === objectEtag.toString()) {
+            found = true;
+            minioClient.getObject(bucketName, object.name, (err, dataStream) => {
+                if (err) {
+                    /* Debug: log error while retrieving file */
+                    console.error(err);
+                    return res.status(500).json({ status: 'Failed', message: 'Failed to fetch file.'});
+                }
+    
+                res.setHeader('Content-Type', 'application/octet-stream');
+                res.setHeader('Content-Disposition', `attachment; filename="${object.name}"`);
+                dataStream.pipe(res);
+            });
+        }
+    });
+    
+    stream.on('end', (object) => {
+        if (!found) {
+            return res.status(404).json({ status: 'Failed', message: 'File not found.' });
+        }
+    });
 }
 
 module.exports = {

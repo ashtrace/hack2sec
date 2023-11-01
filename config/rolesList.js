@@ -1,7 +1,7 @@
 const ROLES_LIST = {
-    'user': 1,
-    'faculty': 2,
-    'admin': 3
+    'user': process.env.RBAC_USER_ID,
+    'faculty': process.env.RBAC_FACULTY_ID,
+    'admin': process.env.RBAC_ADMIN_ID
 }
 
 module.exports = ROLES_LIST;

@@ -10,8 +10,8 @@ const getAllChallenges = async (req, res) => {
 }
 
 const createNewChallenge = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subject_id) {
-        return res.status(400).json({ "message": "Name, points, category, flag and subject_id are required." });
+    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subjectId) {
+        return res.status(400).json({ "message": "Name, points, category, flag and subjectId are required." });
     }
 
     try {
@@ -21,7 +21,7 @@ const createNewChallenge = async (req, res) => {
             points: req.body.points,
             category: req.body.category,
             flag: hashedFlag,
-            subject_id: req.body.subject_id
+            subjectId: req.body.subjectId
         });
 
         res.status(201).json(result);

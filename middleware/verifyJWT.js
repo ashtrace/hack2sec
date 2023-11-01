@@ -17,7 +17,7 @@ const verifyJWT = (req, res, next) => {
                 /* Token may be corrupted or tampered with, return 'Forbidden' */
                 return res.sendStatus(403);
             }
-            req.user    = decoded.UserInfo.username;
+            req.userId    = decoded.UserInfo.userId;
             req.role   = decoded.UserInfo.role;
             next();
         }

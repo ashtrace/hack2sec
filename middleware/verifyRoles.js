@@ -7,9 +7,6 @@ const verfiyRoles = (...allowedRoles) => {
 
         const rolesArray = [...allowedRoles];
 
-        /* Debug: log role */
-        console.log(req.role);
-
         const result = rolesArray.includes(req.role);
 
         if (!result) {

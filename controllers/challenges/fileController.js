@@ -1,23 +1,57 @@
 const minioClient = require('../../config/fsCon');
-
+/*
 const handleFileUpload = (req, res) => {
     const files = req.files;
 
     const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
 
-    /* Save files */
+    const attachmentEtags = [];
+    /* Save files *
     Object.keys(files).forEach(key => {
         const objectName = files[key].name;
         minioClient.putObject(bucketName, objectName, files[key].data, (err, objInfo) => {
             if (err) {
                 return res.status(500).json({ status: "error", message: err.message });
             }
-            /* Debug: log the etags of uploaded blob */
+            /* Debug: log the etags of uploaded blob *
             console.log(objInfo.etag);
-            /* TODO: Add etag (MD5 value) of blob to corresponding challenge's database entry */
+            attachmentEtags.push(objInfo.etag);
+            /* TODO: Add etag (MD5 value) of blob to corresponding challenge's database entry *
         });
     });
-    return res.json({ status: 'Success', message: 'All files uploaded successfully.' });
+    return res.json({ status: 'Success', message: attachmentEtags });
+}*/
+
+const handleFileUpload = async (req, res) => {
+    const files = req.files;
+
+    const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
+
+    const attachmentEtags = [];
+
+    try {
+        for (const key of Object.keys(files)) {
+            const objectName = files[key].name;
+            const objInfo = await new Promise((resolve, reject) => {
+                minioClient.putObject(bucketName, objectName, files[key].data, (err, objInfo) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(objInfo);
+                    }
+                });
+            });
+
+            /* Debug: log the etags of uploaded blob */
+            console.log(objInfo.etag);
+            attachmentEtags.push(objInfo.etag);
+            /* TODO: Add etag (MD5 value) of blob to corresponding challenge's database entry */
+        }
+
+        return res.json({ status: 'Success', message: attachmentEtags });
+    } catch (error) {
+        return res.status(500).json({ status: "error", message: error.message });
+    }
 }
 
 const handleFileDownload = (req, res) => {

@@ -10,8 +10,8 @@ const getAllChallenges = async (req, res) => {
 }
 
 const createNewChallenge = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subjectId) {
-        return res.status(400).json({ "message": "Name, points, category, flag and subjectId are required." });
+    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subjectId || (!req?.body?.url && !req?.body?.files )) {
+        return res.status(400).json({ "message": "Name, points, category, flag, subjectId and either of url or files are required." });
     }
 
     try {
@@ -21,7 +21,11 @@ const createNewChallenge = async (req, res) => {
             points: req.body.points,
             category: req.body.category,
             flag: hashedFlag,
-            subjectId: req.body.subjectId
+            subjectId: req.body.subjectId,
+            attachments: {
+                url: req.body.url || null,
+                files: req.body.files || null
+            }
         });
 
         res.status(201).json(result);

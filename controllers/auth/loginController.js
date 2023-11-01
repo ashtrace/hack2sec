@@ -34,7 +34,7 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '5m' }
+            { expiresIn: '15m' }
         );
 
         /* Create JWT refresh token for the user session */

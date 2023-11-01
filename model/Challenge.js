@@ -23,7 +23,10 @@ const challengeSchema = new Schema({
         required: true
     },
     description: String,
-    url: String,
+    attachments: {
+        url: String,
+        files: Array
+    },
     hint: String,
 });
 

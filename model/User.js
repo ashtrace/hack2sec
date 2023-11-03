@@ -18,14 +18,14 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
-    subjects: [
-        {
-            type: String
-        }
-    ],
+    subjects: Array,
     solvedChallenges: [
         {
-            type: String
+            challengeId: String,
+            name: String,
+            points: Number,
+            timeStamp: String,
+            category: String
         }
     ],
     refreshToken: String

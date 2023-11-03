@@ -20,7 +20,6 @@ const handleRefreshToken = async (req, res) => {
     /* Validate refresh token */
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
         if (err || foundUser._id.toString() !== decoded.userId) {
-            console.log(`refresh token couldn't be validated. founderUser._id: ${typeof foundUser._id} and decoded.userId ${typeof decoded.userId}`);
             return res.sendStatus(403);
         }
 

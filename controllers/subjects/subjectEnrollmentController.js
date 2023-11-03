@@ -1,25 +1,41 @@
 const User      = require('../../model/User');
+const Subject  = require('../../model/Subject');
 
 const handleSubjectEnrollment = async (req, res) => {
-    const username  = req.user;
     const subjects  = req.body.subjects;
 
+    /* Validate if subjects are provided */
     if (!subjects.length) {
         return res.status(400).json({ 'message': 'At least one subject required.' });
     }
 
-    const founderUser = await User.findOne({ username: username }).exec();
-
-    if (!founderUser) {
-        return res.status(404).json({ 'message': 'User does not exist.' });
+    /* Validate if subjects exist */
+    try {
+        const notFoundSubjects = [];
+        for (const subject of subjects) {
+        const foundSubject = await Subject.findOne({ _id: subject }).exec();
+            if (!foundSubject) {
+                notFoundSubjects.push(subject);
+            }
+        }
+        
+        if (notFoundSubjects.length > 0) {
+        return res.status(404).json({ message: `Subjects not found: ${notFoundSubjects.join(', ')}` });
+        }
+    } catch (err) {
+        console.error(err);
+        return res.sendStatus(500);
     }
 
+    /* Add subjects to user */
     try {
-        const newSubjects = [...new Set(founderUser.subjects.concat(subjects))];
+        const foundUser = await User.findOne({_id : req.userId }).exec();
 
-        founderUser.subjects = newSubjects;
+        const newSubjects = [...new Set(foundUser.subjects.concat(subjects))];
 
-        const result = founderUser.save()
+        foundUser.subjects = newSubjects;
+
+        const result = foundUser.save()
         
         return res.json(result);
     } catch (err) {

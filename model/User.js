@@ -18,6 +18,14 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    correctSolves: {
+        type: Number,
+        default: 0
+    },
+    incorrectSolves: {
+        type: Number,
+        default: 0
+    },
     subjects: Array,
     solvedChallenges: [
         {

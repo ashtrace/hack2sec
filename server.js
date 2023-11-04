@@ -48,6 +48,8 @@ app.use('/api/challenges/download', require('./routes/api/challenges/download'))
 app.use('/api/challenges/validate', require('./routes/api/challenges/validate'));
 app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));
+app.use('/api/stats/leaderboard', require('./routes/api/stats/leaderboard'));
+app.use('/api/stats/user-dashboard', require('./routes/api/stats/userDashboard'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

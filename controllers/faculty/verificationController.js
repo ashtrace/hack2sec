@@ -31,7 +31,6 @@ const handleVerification = async (req, res) => {
         }
 
         const password = generatePassword();
-        console.log(password);
         const hashedPwd = await bcrypt.hash(password, 10);
 
         const approvedFaculty = await Faculty.create({

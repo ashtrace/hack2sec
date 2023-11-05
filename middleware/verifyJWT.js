@@ -1,9 +1,11 @@
-const jwt   = require('jsonwebtoken');
-const User  = require('../model/User');
+const jwt       = require('jsonwebtoken');
+const User      = require('../model/User');
+const Faculty   = require('../model/Faculty');
 
 const verifyUser = async userId => {
-    const foundUser =  await User.findOne({ _id: userId }).exec();
-    if (foundUser) return true;
+    const foundUser =  await User.findById(userId);
+    const foundFaculty = await Faculty.findById(userId);
+    if (foundUser || foundFaculty) return true;
     return false;
 }
 

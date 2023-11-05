@@ -4,7 +4,7 @@ const jwt       = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
     /* De-serialze username and password */
-    const {user, pwd } = req.body;
+    const { user, pwd } = req.body;
     
     if (!user || !pwd) {
         return res.status(400).json({ 'message': 'Username and password required.'});
@@ -34,6 +34,7 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
+            /* TODO: Change the validaty back to 15m */
             { expiresIn: '1d' }
         );
 
@@ -52,15 +53,15 @@ const handleLogin = async (req, res) => {
         console.log(result)
 
         /* Send refersh token to user as cookie.
-         * TODO: Add SameSite configuration for front-end
+         * TODO: Add 'SameSite' configuration for front-end. Add 'secure' for HTTPS
          */
-        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
 
         /* Send access token to user in response body */
         res.json({ accessToken });
     
     } else {
-        res.status(401).json( { 'message': 'Incorrect username or password.'});
+        res.status(401).json({ 'message': 'Incorrect username or password.' });
     }
 }
 

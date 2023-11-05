@@ -1,4 +1,5 @@
 const UnapprovedFaculty = require('../../model/UnapprovedFaculty');
+const ApprovedFaculty   = require('../../model/Faculty');
 
 const handleNewFaculty = async (req, res) => {
     const {firstname, lastname, empId, email} = req.body;
@@ -7,10 +8,16 @@ const handleNewFaculty = async (req, res) => {
         return res.status(400).json({ 'message': 'Firstname, Lastname, Employee ID and E-mail are required.'});
     }
 
-    const duplicate = await UnapprovedFaculty.findOne({ empId: empId }).exec();
+    const duplicateUnapproved = await UnapprovedFaculty.findOne({ empId: empId }).exec();
 
-    if (duplicate) {
-        return res.sendStatus(409);
+    if (duplicateUnapproved) {
+        return res.status(409).json({ 'message': `${empId} already submitted for verfication as user: ${duplicateUnapproved.firstname} ${duplicateUnapproved.lastname}` });
+    }
+
+    const duplicateApproved = await ApprovedFaculty.findOne({ empId: empId }).exec();
+    
+    if (duplicateApproved) {
+        return res.status(409).json({ 'message': `${empId} already registered as user: ${duplicateApproved.firstname} ${duplicateApproved.lastname}` });
     }
 
     try {

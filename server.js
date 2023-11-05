@@ -35,10 +35,13 @@ app.use(express.static('./static'));
 
 /* Setup Routes */
 app.use('/', require('./routes/root'));
+
 app.use('/api/register', require('./routes/api/auth/register'));
 app.use('/api/login', require('./routes/api/auth/login'));
 app.use('/api/refresh', require('./routes/api/auth/refresh'));
 app.use('/api/logout', require('./routes/api/auth/logout'));
+
+app.use('/api/faculty/register', require('./routes/api/faculty/register'));
 
 /* Setup Protected Routes */
 app.use(verifyJWT);
@@ -46,10 +49,14 @@ app.use('/api/challenges', require('./routes/api/challenges/challenges'));
 app.use('/api/challenges/upload', require('./routes/api/challenges/upload'));
 app.use('/api/challenges/download', require('./routes/api/challenges/download'));
 app.use('/api/challenges/validate', require('./routes/api/challenges/validate'));
+
 app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));
+
 app.use('/api/stats/leaderboard', require('./routes/api/stats/leaderboard'));
 app.use('/api/stats/user-dashboard', require('./routes/api/stats/userDashboard'));
+
+app.use('/api/faculty/verify', require('./routes/api/faculty/verification'));
 
 app.all('*', (req, res) => {
     return res.status(404).send('404 page not found');

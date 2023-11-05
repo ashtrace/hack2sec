@@ -28,11 +28,11 @@ const verifyJWT = (req, res, next) => {
                     next();
                 } else {
                     /* Token may be corrupted or tampered with, return 'Forbidden' */
-                    return res.sendStatus(403);
+                    return res.status(403).json({ 'message': 'Invalid access token.' });
                 }
             } catch (err) {
                 console.error(err);
-                return res.sendStatus(500);
+                return res.status(403).json({ 'message': 'Invalid access token.' });
             }
         }
     )

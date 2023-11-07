@@ -8,9 +8,9 @@ router.route('/')
     .get(challengeController.getAllChallenges)
     .post(verifyRoles(ROLES_LIST.admin, ROLES_LIST.faculty), challengeController.createNewChallenge)
     .put(verifyRoles(ROLES_LIST.admin, ROLES_LIST.faculty), challengeController.updateChallege)
-    .delete(verifyRoles(ROLES_LIST.admin), challengeController.deleteChallenge);
+    .delete(verifyRoles(ROLES_LIST.admin, ROLES_LIST.faculty), challengeController.deleteChallenge);
 
-router.route('/:id')
+router.route('/:challenge_id')
     .get(challengeController.getChallenge);
 
 module.exports = router;

@@ -13,7 +13,7 @@ const createNewSubject = async (req, res) => {
         return res.status(400).json({ "message": "Name and subject code are required." });
     }
 
-    const duplicate = await Subject.findOne({ subject_code: req.body.subject_code }).exec();
+    const duplicate = await Subject.findOne({ subjectCode: req.body.subject_code }).exec();
     if (duplicate) {
         /* HTTP 409: Conflict */
         return res.sendStatus(409);
@@ -22,7 +22,7 @@ const createNewSubject = async (req, res) => {
     try {
         const result = await Subject.create({
             name: req.body.name,
-            subject_code: req.body.subject_code,
+            subjectCode: req.body.subject_code,
             syllabus: req.body.syllabus || null
         });
         
@@ -38,7 +38,7 @@ const updateSubject = async (req, res) => {
         return res.status(400).json({ "message": "ID parameter required." });
     }
 
-    const subject = await Subject.findOne({ _id: req.body.id }).exec();
+    const subject = await Subject.findById(req.body.id);
     if (!subject) {
         return res.status(404).json({ "message": `Subject ID ${req.body.id} not found`});
     }
@@ -47,7 +47,7 @@ const updateSubject = async (req, res) => {
         subject.name = req.body.name;
     }
     if (req.body?.subject_code) {
-        subject.subject_code = req.body.subject_code;
+        subject.subjectCode = req.body.subject_code;
     }
     if (req.body?.syllabus) {
         subject.syllabus = req.body.syllabus;
@@ -63,13 +63,13 @@ const deleteSubject = async (req, res) => {
         return res.status(400).json({ "message": "ID parameter required." });
     }
 
-    const subject = await Subject.findOne({ _id: req.body.id });
+    const subject = await Subject.findById(req.body.id);
 
     if (!subject) {
         return res.status(404).json({ "message": `Subject ID ${req.body.id} not found.` });
     }
 
-    const result = await Subject.deleteOne({ _id: req.body.id });
+    const result = await Subject.findByIdAndDelete(req.body.id);
 
     res.json(result);
 }

@@ -6,7 +6,7 @@ const subjectSchema = new Schema({
         type: String,
         required: true
     },
-    subject_code: {
+    subjectCode: {
         type: String,
         require: true
     },

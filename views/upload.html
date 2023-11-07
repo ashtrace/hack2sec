@@ -58,10 +58,10 @@
             const json = await response.json();
 
             const h2 = document.querySelector('h2');
-            h2.textContent = `Status: ${json?.status}`;
+            h2.textContent = `Uploaded: ${json?.filename}`;
 
             const h3 = document.querySelector('h3');
-            h3.textContent = json?.message;
+            h3.textContent = json?.filename;
 
             console.log(json)
         }

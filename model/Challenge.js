@@ -25,9 +25,12 @@ const challengeSchema = new Schema({
     description: String,
     attachments: {
         url: String,
-        files: Array
+        files: String
     },
+    hintEnabled: Boolean,
     hint: String,
+    topic: String,
+    resource: String
 });
 
 module.exports = mongoose.model('Challenge', challengeSchema);

@@ -1,102 +1,78 @@
 const minioClient = require('../../config/fsCon');
-/*
+const AdmZip      = require('adm-zip');
+
 const handleFileUpload = (req, res) => {
     const files = req.files;
-
     const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
-
-    const attachmentEtags = [];
-    /* Save files *
+    const timestamp = Date.now();
+    let zipFileName = '';
+    
     Object.keys(files).forEach(key => {
-        const objectName = files[key].name;
-        minioClient.putObject(bucketName, objectName, files[key].data, (err, objInfo) => {
-            if (err) {
-                return res.status(500).json({ status: "error", message: err.message });
-            }
-            /* Debug: log the etags of uploaded blob *
-            console.log(objInfo.etag);
-            attachmentEtags.push(objInfo.etag);
-            /* TODO: Add etag (MD5 value) of blob to corresponding challenge's database entry *
-        });
+        zipFileName += files[key].name.replace(' ', '-') + '_';
     });
-    return res.json({ status: 'Success', message: attachmentEtags });
-}*/
 
-const handleFileUpload = async (req, res) => {
-    const files = req.files;
-
-    const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
-
-    const attachmentEtags = [];
+    zipFileName += `${timestamp}.zip`;
+    console.log(zipFileName);
 
     try {
-        for (const key of Object.keys(files)) {
-            const objectName = files[key].name;
-            const objInfo = await new Promise((resolve, reject) => {
-                minioClient.putObject(bucketName, objectName, files[key].data, (err, objInfo) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(objInfo);
-                    }
-                });
-            });
+        const zip = new AdmZip();
 
-            /* Debug: log the etags of uploaded blob */
-            console.log(objInfo.etag);
-            attachmentEtags.push(objInfo.etag);
-            /* TODO: Add etag (MD5 value) of blob to corresponding challenge's database entry */
-        }
+        Object.keys(files).forEach(key => {
+            zip.addFile(files[key].name, files[key].data);
+        });
 
-        return res.json({ status: 'Success', message: attachmentEtags });
-    } catch (error) {
-        return res.status(500).json({ status: "error", message: error.message });
+        const zipData = zip.toBuffer();
+
+        minioClient.putObject(bucketName, zipFileName, zipData, (err, objInfo) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ 'message': 'Failed to upload challenge files.' });
+            } else {
+                return res.json({ 'filename': zipFileName });
+            }
+        });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ 'message': 'Failed to upload challenge files.' });
     }
 }
 
 const handleFileDownload = (req, res) => {
     const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
-    const objectEtag = req.params.etag;
-    
-    let found = false;
 
-    const stream = minioClient.listObjects(bucketName, '', false);
+    if (!req?.params?.filename) {
+        return res.status(400).json({ 'message': 'Filename is required.' });
+    }
 
-    stream.on('error', (err) => {
-        /* Debug: log error in listing bucket contents */
+    const objectName = req.params.filename;
+
+    minioClient.getObject(bucketName, objectName, (err, dataStream) => {
+        if (err) {
+            console.error(err);
+            return res.status(404).send('File not found.');
+        }
+
+        res.setHeader('Content-Type', 'application/octet-stream');
+        res.setHeader('Content-Disposition', `attachment; filename="${objectName}"`);
+        dataStream.pipe(res);
+    });
+}
+
+function deleteFile(filename) {
+    const bucketName = process.env.MINIO_CHALLENGE_BUCKET_NAME;
+
+    try {
+        minioClient.removeObject(bucketName, filename);
+        return true;
+    } catch (err) {
         console.error(err);
-        return res.status(500).json({ status: 'Failed', message: 'Bucket listing failed.'});
-    });
-
-    stream.on('data', (object) => {
-        if (found) {
-            return;
-        }
-
-        if (object.etag.toString() === objectEtag.toString()) {
-            found = true;
-            minioClient.getObject(bucketName, object.name, (err, dataStream) => {
-                if (err) {
-                    /* Debug: log error while retrieving file */
-                    console.error(err);
-                    return res.status(500).json({ status: 'Failed', message: 'Failed to fetch file.'});
-                }
-    
-                res.setHeader('Content-Type', 'application/octet-stream');
-                res.setHeader('Content-Disposition', `attachment; filename="${object.name}"`);
-                dataStream.pipe(res);
-            });
-        }
-    });
-    
-    stream.on('end', (object) => {
-        if (!found) {
-            return res.status(404).json({ status: 'Failed', message: 'File not found.' });
-        }
-    });
+        return false;
+    }
 }
 
 module.exports = {
     handleFileUpload,
-    handleFileDownload
+    handleFileDownload,
+    deleteFile
 };

@@ -21,13 +21,18 @@ const handleFlagValidation = async (req, res) => {
             if (foundUser.solvedChallenges.some(challenge => challenge.challengeId === req.body.challenge_id)) {
                 return res.status(304).json({ "message": "Challenge already solved!" });
             } else {
+                let hintCost = 0;
+                if (foundUser.hintsTaken.some(challengeId => challengeId.toString() === foundChallenge._id.toString())) {
+                    hintCost = 0.1 * foundChallenge.points;
+                }
+
                 foundUser.points += foundChallenge.points;
                 foundUser.correctSolves += 1;
 
                 const sovledChallenge = {
                     challengeId: foundChallenge._id,
                     name: foundChallenge.name,
-                    points: foundChallenge.points,
+                    points: foundChallenge.points - hintCost,
                     timeStamp: new Date().toISOString(),
                     category: foundChallenge.category
                 }

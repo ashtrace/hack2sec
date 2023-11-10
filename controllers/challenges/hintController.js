@@ -8,15 +8,18 @@ const handleHint = async (req, res) => {
 
     try {
         const challenge = await Challenge.findById(req.params.challenge_id);
+        const user = await User.findById(req.userId);
+
+        if (user.hintsTaken.includes(challenge._id)) {
+            return res.json({ 'message': challenge.hint });
+        }
+
+        if (user.solvedChallenges.some(solvedChallenge => solvedChallenge.challengeId === challenge._id.toString())) {
+            return res.status(304).json({ 'message': 'Challenge already solved.' });
+        }
 
         if (!challenge.hintEnabled) {
             return res.status(403).json({ 'message': `Hint for challenge ${challenge._id} is disabled.` });
-        }
-
-        const user = await User.findById(req.userId);
-        
-        if (user.hintsTaken.includes(challenge._id)) {
-            return res.json({ 'message': challenge.hint });
         }
 
         const cost = 0.1 * challenge.points;

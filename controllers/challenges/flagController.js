@@ -19,7 +19,7 @@ const handleFlagValidation = async (req, res) => {
             const foundUser = await User.findOne({ _id: req.userId }).exec();
 
             if (foundUser.solvedChallenges.some(challenge => challenge.challengeId === req.body.challenge_id)) {
-                return res.json({ "message": "Challenge solved!" });
+                return res.status(304).json({ "message": "Challenge already solved!" });
             } else {
                 foundUser.points += foundChallenge.points;
                 foundUser.correctSolves += 1;

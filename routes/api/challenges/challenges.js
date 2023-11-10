@@ -11,6 +11,6 @@ router.route('/')
     .delete(verifyRoles(ROLES_LIST.admin, ROLES_LIST.faculty), challengeController.deleteChallenge);
 
 router.route('/:challenge_id')
-    .get(challengeController.getChallenge);
+    .get(verifyRoles(ROLES_LIST.admin, ROLES_LIST.faculty), challengeController.getChallenge);
 
 module.exports = router;

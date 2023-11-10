@@ -12,7 +12,6 @@ const handleFileUpload = (req, res) => {
     });
 
     zipFileName += `${timestamp}.zip`;
-    console.log(zipFileName);
 
     try {
         const zip = new AdmZip();

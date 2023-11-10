@@ -2,6 +2,14 @@ const mongoose  = require('mongoose');
 const Schema    = mongoose.Schema;
 
 const userSchema = new Schema({
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
     username: {
         type: String,
         required: true
@@ -9,6 +17,23 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    rollNo: {
+        type: String,
+        required: true
+    },
+    branch: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true,
+        default: 1
     },
     role: {
         type: String,
@@ -18,6 +43,7 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    hintsTaken: Array,
     correctSolves: {
         type: Number,
         default: 0

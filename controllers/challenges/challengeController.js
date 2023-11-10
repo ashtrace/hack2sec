@@ -4,7 +4,7 @@ const { deleteFile }    = require('./fileController');
 const bcrypt                    = require('bcrypt');
 
 const getAllChallenges = async (req, res) => {
-    const challenges = await Challenge.find({}, 'name points');
+    const challenges = await Challenge.find({}, '-flag -hint -__v');
     if (!challenges) {
         return res.status(404).json({ 'message': 'No challenges found.' });
     }
@@ -12,8 +12,8 @@ const getAllChallenges = async (req, res) => {
 }
 
 const createNewChallenge = async (req, res) => {
-    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subject_id || (!req?.body?.url && !req?.body?.files )) {
-        return res.status(400).json({ 'message': 'Name, points, category, flag, subject_id and either of url or files are required.' });
+    if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subject_id || (!req?.body?.url && !req?.body?.filename)) {
+        return res.status(400).json({ 'message': 'Name, points, category, flag, subject_id and either of url or filename are required.' });
     }
 
     if (req.body.hint && !req.body?.hint_enabled) {
@@ -26,6 +26,9 @@ const createNewChallenge = async (req, res) => {
     }
 
     try {
+        const foundSubject = await Subject.findById(req.body.subject_id);
+        const subject = `${foundSubject.name} (${foundSubject.subjectCode})`;
+
         hashedFlag = await bcrypt.hash(req.body.flag, 10);
         const result = await Challenge.create({
             name: req.body.name,
@@ -33,10 +36,11 @@ const createNewChallenge = async (req, res) => {
             category: req.body.category,
             flag: hashedFlag,
             subjectId: req.body.subject_id,
+            subject: subject,
             description: req.body.description || null,
             attachments: {
                 url: req.body.url || null,
-                files: req.body.files || null
+                files: req.body.filename || null
             },
             hintEnabled: req.body.hint_enabled || false,
             hint: req.body.hint || null,
@@ -84,12 +88,16 @@ const updateChallege = async (req, res) => {
         foundChallenge.hint                 = req.body.hint || foundChallenge.hint;
         foundChallenge.topic                = req.body.topic || foundChallenge.topic;
         foundChallenge.resource             = req.body.resource || foundChallenge.resource;
-        
-        if (req?.body?.files) {
-            if (deleteFile(foundChallenge.attachments.files)) {
-                foundChallenge.attachments.files = req.body.files;
+
+        if (req?.body?.filename) {
+            if (foundChallenge.attachments.files) {
+                if (deleteFile(foundChallenge.attachments.files)) {
+                    foundChallenge.attachments.files = req.body.filename;
+                } else {
+                    return res.status(500).json({ 'message': 'Failed to delete old challenge files.' });
+                }
             } else {
-                return res.status(500).json({ 'message': 'Failed to delete old challenge files.' });
+                foundChallenge.attachments.files = req.body.filename;
             }
         }
 
@@ -119,7 +127,7 @@ const deleteChallenge = async (req, res) => {
                 return res.status(500).json({ 'message': 'Failed to delete challenge files.' });
             }
         }
-        
+
         await Challenge.deleteOne({ _id: foundChallenge._id });
 
         return res.json({ 'message': `Deleted challenge ${req.body.challenge_id}.` });
@@ -127,7 +135,7 @@ const deleteChallenge = async (req, res) => {
         console.error(err);
         return res.status(500).json({ 'message': 'Failed to delete challenge' });
     }
-    
+
 }
 
 const getChallenge = async (req, res) => {
@@ -140,7 +148,7 @@ const getChallenge = async (req, res) => {
         if (!foundChallenge) {
             return res.status(404).json({ 'message': `No challenge with id ${req.params.id} found.` });
         }
-        
+
         const foundSubject = await Subject.findById(foundChallenge.subjectId);
         const subject = `${foundSubject.name} ${foundSubject.subjectCode}`;
 
@@ -149,9 +157,15 @@ const getChallenge = async (req, res) => {
             description: foundChallenge.description,
             points: foundChallenge.points,
             subject: subject,
+            subject_id: foundChallenge.subjectId,
             topic: foundChallenge.topic,
             resource: foundChallenge.resource,
-            hint_enabled: foundChallenge.hintEnabled
+            hint_enabled: foundChallenge.hintEnabled,
+            category: foundChallenge.category,
+            url: foundChallenge.attachments.url,
+            filename: foundChallenge.attachments.files,
+            hint_enabled: foundChallenge.hintEnabled,
+            hint: foundChallenge.hint
         }
 
         return res.json(result);

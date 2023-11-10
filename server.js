@@ -4,9 +4,9 @@ const express       = require('express');
 const app           = express();
 const path          = require('path');
 const cors          = require('cors');
-const corsOptions   = require('./config/corsOptions');
+//const corsOptions   = require('./config/corsOptions');
 const cookieParser  = require('cookie-parser');
-const credentials   = require('./middleware/credentials');
+//const credentials   = require('./middleware/credentials');
 const mongoose      = require('mongoose');
 const connectDB     = require('./config/dbCon');
 const verifyJWT     = require('./middleware/verifyJWT');
@@ -15,7 +15,7 @@ const verifyJWT     = require('./middleware/verifyJWT');
 connectDB();
 
 /* Middleware to allow CORS for login */
-app.use(credentials);
+//app.use(credentials);
 
 /* Set-up CORS */
 //app.use(cors(corsOptions));
@@ -50,6 +50,7 @@ app.use('/api/challenges', require('./routes/api/challenges/challenges'));
 app.use('/api/challenges/upload', require('./routes/api/challenges/upload'));
 app.use('/api/challenges/download', require('./routes/api/challenges/download'));
 app.use('/api/challenges/validate', require('./routes/api/challenges/validate'));
+app.use('/api/challenges/hint', require('./routes/api/challenges/hint'));
 
 app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));

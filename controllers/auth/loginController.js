@@ -4,14 +4,14 @@ const jwt       = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
     /* De-serialze username and password */
-    const { user, pwd } = req.body;
+    const { username, password } = req.body;
     
-    if (!user || !pwd) {
+    if (!username || !password) {
         return res.status(400).json({ 'message': 'Username and password required.'});
     }
 
     /* Check if username exists */
-    const foundUser = await User.findOne({ username: user }).exec();
+    const foundUser = await User.findOne({ username: username }).exec();
 
     if (!foundUser) {
         /* HTTP 401: Unauthorized */
@@ -19,7 +19,7 @@ const handleLogin = async (req, res) => {
     }
 
     /* Validate password */
-    const match = await bcrypt.compare(pwd, foundUser.password);
+    const match = await bcrypt.compare(password, foundUser.password);
 
     if (match) {
         /* Derive RBAC values for the user */

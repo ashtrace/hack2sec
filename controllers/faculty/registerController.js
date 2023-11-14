@@ -25,7 +25,8 @@ const handleNewFaculty = async (req, res) => {
             "firstname": firstname,
             "lastname": lastname,
             "empId": empId,
-            "email": email
+            "email": email,
+            "subject": req.body.subject || null
         });
 
         /* Debug: Log the result */

@@ -36,8 +36,8 @@ const handleLeaderboard = async (req, res) => {
         const topUsers = await User.find({ points: { $gt: 0 } }).sort({ points: -1 }).limit(10);
 
         const leaderboard = {
-            X: new Set(),
-            Y: []
+            labels: new Set(),
+            leaderboardData: []
         };
 
         /* Iterate through top 10 users to generate their solve-history */
@@ -53,7 +53,7 @@ const handleLeaderboard = async (req, res) => {
             while (currentDate.isSameOrBefore(today, 'day')) {
                 /* Store points upto this date */
                 const formattedDate = currentDate.format('MM/DD/YYYY');
-                leaderboard.X.add(formattedDate);
+                leaderboard.labels.add(formattedDate);
 
                 userPoints = calculateUserPointsOnDate(user, currentDate, userPoints);
                 userData.scores.push(userPoints);
@@ -63,10 +63,10 @@ const handleLeaderboard = async (req, res) => {
             }
 
             /* Add user's points by date to the leaderboard */
-            leaderboard.Y.push(userData);
+            leaderboard.leaderboardData.push(userData);
         }
 
-        leaderboard.X = Array.from(leaderboard.X);
+        leaderboard.labels = Array.from(leaderboard.labels);
 
         return res.json(leaderboard);
     } catch (error) {

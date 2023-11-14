@@ -17,7 +17,8 @@ const unapprovedFacultySchema = new Schema ({
     email: {
         type: String,
         required: true
-    }
+    },
+    subject: String
 });
 
 module.exports = mongoose.model('UnapprovedFaculty', unapprovedFacultySchema);

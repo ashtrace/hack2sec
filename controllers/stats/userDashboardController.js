@@ -16,7 +16,17 @@ const handleUserDashboard = async (req, res) => {
             }
         });
 
+        const rank = await User.aggregate([
+            { $match: { points: { $gt: foundUser.points }}},
+            { $group: { _id: null, rank: { $sum: 1 }}}
+        ]);
+
+        const userRank = rank.length > 0 ? rank[0].rank + 1 : 1;
+
         const dashboardData = {
+            name: `${foundUser.firstname} ${foundUser.lastname}`,
+            username: foundUser.username,
+            rank: userRank,
             correctSolves: foundUser.correctSolves,
             incorrectSolves: foundUser.incorrectSolves,
             categoryCounts: categoryCounts,

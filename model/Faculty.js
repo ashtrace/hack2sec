@@ -27,7 +27,8 @@ const facultySchema = new Schema({
         default: process.env.RBAC_FACULTY_ID
     },
     subjects: Array,
-    refreshToken: String
+    refreshToken: String,
+    pwdResetToken: String
 });
 
 module.exports = mongoose.model('Faculty', facultySchema);

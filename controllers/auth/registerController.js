@@ -1,5 +1,7 @@
-const User      = require('../../model/User');
-const bcrypt    = require('bcrypt'); /* To hash passwords */
+const User              = require('../../model/User');
+const UnapprovedFaculty = require('../../model/UnapprovedFaculty');
+const ApprovedFaculty   = require('../../model/Faculty');
+const bcrypt            = require('bcrypt'); /* To hash passwords */
 
 const handleNewUser = async (req, res) => {
     if ( !req?.body?.firstname || !req?.body?.lastname || !req?.body?.username || !req?.body?.password || !req?.body?.email || !req?.body?.roll_no || !req?.body?.branch || !req?.body?.year) {
@@ -8,7 +10,7 @@ const handleNewUser = async (req, res) => {
 
     const {firstname, lastname, username, password, email, roll_no, branch, year } = req.body;
 
-    /* Check for duplicate usernames in database */
+    /* Check for duplicates in database */
     let duplicate = await User.findOne({ username: username }).exec();
     if (duplicate) {
         /* HTTP 409: Conflict */
@@ -18,6 +20,21 @@ const handleNewUser = async (req, res) => {
     duplicate = await User.findOne({ rollNo: roll_no }).exec();
     if (duplicate) {
         return res.status(409).json({ 'message': `User with roll ${duplicate.rollNo} already exists.` });
+    }
+
+    duplicate = await User.findOne({ email: email }).exec();
+    if (duplicate) {
+        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
+    }
+
+    duplicate = await UnapprovedFaculty.findOne({ email: email }).exec();
+    if (duplicate) {
+        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
+    }
+
+    duplicate = await ApprovedFaculty.findOne({ email: email }).exec();
+    if (duplicate) {
+        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
     }
     
     try {

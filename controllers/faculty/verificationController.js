@@ -99,7 +99,7 @@ const handleRejection = async (req, res) => {
         }
 
         /* Send rejection mail to faculty */
-        const subject = "Rejection of Hack2sec faculty registration request.";
+        const subject = "Rejection of Hack2Sec faculty registration request.";
         const body = {
             text: 'Your submission for Hack2Sec Faculty account has been rejected. Please contact administrator for further details.',
             html: `
@@ -128,7 +128,7 @@ const handleRejection = async (req, res) => {
         if (mailed) {
             await UnapprovedFaculty.findByIdAndDelete(unapprovedFaculty._id);
     
-            return res.status(201).json({ 'message': `Rejection mail sent for ${unapprovedFaculty.firstname} ${unapprovedFaculty.lastname} at ${unapprovedFaculty.email}.` });
+            return res.json({ 'message': `Rejection mail sent for ${unapprovedFaculty.firstname} ${unapprovedFaculty.lastname} at ${unapprovedFaculty.email}.` });
         } else {
             return res.status(500).json({ 'message': `Failed to send rejection mail for ${unapprovedFaculty.firstname} ${unapprovedFaculty.lastname} at ${unapprovedFaculty.email}` });
         }

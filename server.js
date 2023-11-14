@@ -40,6 +40,7 @@ app.use('/api/register', require('./routes/api/auth/register'));
 app.use('/api/login', require('./routes/api/auth/login'));
 app.use('/api/refresh', require('./routes/api/auth/refresh'));
 app.use('/api/logout', require('./routes/api/auth/logout'));
+app.use('/api/forgot-password', require('./routes/api/auth/forgotPassword'));
 
 app.use('/api/faculty/register', require('./routes/api/faculty/register'));
 app.use('/api/faculty/login', require('./routes/api/faculty/login'));

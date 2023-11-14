@@ -62,7 +62,8 @@ const userSchema = new Schema({
             category: String
         }
     ],
-    refreshToken: String
+    refreshToken: String,
+    pwdResetToken: String
 });
 
 module.exports = mongoose.model('User', userSchema);

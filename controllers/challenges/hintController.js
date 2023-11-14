@@ -8,6 +8,20 @@ const handleHint = async (req, res) => {
 
     try {
         const challenge = await Challenge.findById(req.params.challenge_id);
+        if (!challenge) {
+            return res.status(400).json({ 'message': `No challenge exists with ID ${req.params.challenge_id}` });
+        }
+
+        /* If this user (faculty) created the challenge or it is an administrator */
+        if (challenge.creatorId === req.userId || process.env.RBAC_ADMIN_ID === req.role ) {
+            return res.json({ 'message': `The hint is '${challenge.hint}'` });
+        }
+
+        /* If a faculty requests hint for a challenge they did NOT create */
+        if (challenge.creatorId !== req.userId && process.env.RBAC_FACULTY_ID === req.role ) {
+            return res.status(403).json({ 'message': 'You do not have permission to view hint of this challenge.' });
+        }
+
         const user = await User.findById(req.userId);
 
         if (user.hintsTaken.includes(challenge._id)) {

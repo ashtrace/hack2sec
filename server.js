@@ -51,6 +51,7 @@ app.use('/api/challenges/upload', require('./routes/api/challenges/upload'));
 app.use('/api/challenges/download', require('./routes/api/challenges/download'));
 app.use('/api/challenges/validate', require('./routes/api/challenges/validate'));
 app.use('/api/challenges/hint', require('./routes/api/challenges/hint'));
+app.use('/api/mychallenges', require('./routes/api/challenges/mychallenges'));
 
 app.use('/api/subjects', require('./routes/api/subjects/subjects'));
 app.use('/api/subjects/enroll-subjects', require('./routes/api/subjects/enrollSubjects'));

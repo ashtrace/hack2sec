@@ -4,9 +4,17 @@ const { deleteFile }    = require('./fileController');
 const bcrypt                    = require('bcrypt');
 
 const getAllChallenges = async (req, res) => {
-    const challenges = await Challenge.find({}, '-flag -hint -__v');
-    if (!challenges) {
-        return res.status(404).json({ 'message': 'No challenges found.' });
+    const challenges = await Challenge.find({}, '-flag -hint -__v -creatorId');
+    if (!challenges || challenges.length === 0) {
+        return res.status(204).json({ 'message': 'No challenges found.' });
+    }
+    res.json(challenges);
+}
+
+const getCreatedChallenges = async (req, res) => {
+    const challenges = await Challenge.find({ creatorId: req.userId }, '-flag -__v -creatorId');
+    if (!challenges || challenges.length === 0) {
+        return res.status(204).json({ 'message': 'No challenges found.' });
     }
     res.json(challenges);
 }
@@ -14,6 +22,10 @@ const getAllChallenges = async (req, res) => {
 const createNewChallenge = async (req, res) => {
     if (!req?.body?.name || !req?.body?.points || !req?.body?.category || !req?.body?.flag || !req?.body?.subject_id || (!req?.body?.url && !req?.body?.filename)) {
         return res.status(400).json({ 'message': 'Name, points, category, flag, subject_id and either of url or filename are required.' });
+    }
+
+    if (req.body.url && req.body.filename) {
+        return res.status(400).json({ 'message': 'Please provide either URL or files, not both.' });
     }
 
     if (req.body.hint && !req.body?.hint_enabled) {
@@ -31,6 +43,7 @@ const createNewChallenge = async (req, res) => {
 
         hashedFlag = await bcrypt.hash(req.body.flag, 10);
         const result = await Challenge.create({
+            creatorId: req.userId,
             name: req.body.name,
             points: req.body.points,
             category: req.body.category,
@@ -77,6 +90,10 @@ const updateChallege = async (req, res) => {
             return res.status(404).json({ 'message': `Challenge ID ${req.body.id} not found.`});
         }
 
+        if (foundChallenge.creatorId !== req.userId || process.env.RBAC_ADMIN_ID === req.role) {
+            return res.status(403).json({ 'message': `You do not have adequate permission to modify challenge ${foundChallenge.name}` });
+        }
+
         foundChallenge.name                 = req.body.name || foundChallenge.name;
         foundChallenge.points               = req.body.points || foundChallenge.points;
         foundChallenge.category             = req.body.category || foundChallenge.category;
@@ -120,6 +137,10 @@ const deleteChallenge = async (req, res) => {
 
         if (!foundChallenge) {
             return res.status(404).json({ 'message': `Challenge ID ${req.body.id} not found.` });
+        }
+
+        if (foundChallenge.creatorId !== req.userId || process.env.RBAC_ADMIN_ID === req.role) {
+            return res.status(403).json({ 'message': `You do not have adequate permission to delete challenge ${foundChallenge.name}` });
         }
 
         if (foundChallenge.attachments.files) {
@@ -177,6 +198,7 @@ const getChallenge = async (req, res) => {
 
 module.exports = {
     getAllChallenges,
+    getCreatedChallenges,
     createNewChallenge,
     updateChallege,
     deleteChallenge,

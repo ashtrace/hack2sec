@@ -1,22 +1,32 @@
 const Challenge                 = require('../../model/Challenge');
 const Subject                   = require('../../model/Subject');
-const { deleteFile }    = require('./fileController');
+const { deleteFile }            = require('./fileController');
 const bcrypt                    = require('bcrypt');
 
 const getAllChallenges = async (req, res) => {
-    const challenges = await Challenge.find({}, '-flag -hint -__v -creatorId');
-    if (!challenges || challenges.length === 0) {
-        return res.status(204).json({ 'message': 'No challenges found.' });
+    try {
+        const challenges = await Challenge.find({}, '-flag -hint -__v -creatorId');
+        if (!challenges || challenges.length === 0) {
+            return res.status(204).json({ 'message': 'No challenges found.' });
+        }
+        return res.json(challenges);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).json({ 'messgae': 'Failed to retrieve challenges.' });
     }
-    res.json(challenges);
 }
 
 const getCreatedChallenges = async (req, res) => {
-    const challenges = await Challenge.find({ creatorId: req.userId }, '-flag -__v -creatorId');
-    if (!challenges || challenges.length === 0) {
-        return res.status(204).json({ 'message': 'No challenges found.' });
+    try {
+        const challenges = await Challenge.find({ creatorId: req.userId }, '-flag -__v -creatorId');
+        if (!challenges || challenges.length === 0) {
+            return res.status(204).json({ 'message': 'No challenges found.' });
+        }
+        return res.json(challenges);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).json({ 'message': 'Failed to retrieve challenges you created.' });
     }
-    res.json(challenges);
 }
 
 const createNewChallenge = async (req, res) => {

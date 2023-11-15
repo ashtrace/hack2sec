@@ -26,7 +26,7 @@ const facultySchema = new Schema({
         type: String,
         default: process.env.RBAC_FACULTY_ID
     },
-    subjects: Array,
+    subject: String,
     refreshToken: String,
     pwdResetToken: String
 });

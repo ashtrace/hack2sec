@@ -9,7 +9,6 @@ const handleSubjectEnrollment = async (req, res) => {
         return res.status(400).json({ 'message': 'At least one subject required.' });
     }
 
-    /* Validate if subjects exist */
     try {
         const notFoundSubjects = [];
         for (const subject of subjects) {
@@ -20,15 +19,9 @@ const handleSubjectEnrollment = async (req, res) => {
         }
         
         if (notFoundSubjects.length > 0) {
-        return res.status(404).json({ message: `Subjects not found: ${notFoundSubjects.join(', ')}` });
+            return res.status(404).json({ message: `Subjects not found: ${notFoundSubjects.join(', ')}` });
         }
-    } catch (err) {
-        console.error(err);
-        return res.sendStatus(500);
-    }
 
-    /* Add subjects to user */
-    try {
         const foundUser = await User.findOne({_id : req.userId }).exec();
 
         const newSubjects = [...new Set(foundUser.subjects.concat(subjects))];
@@ -37,10 +30,10 @@ const handleSubjectEnrollment = async (req, res) => {
 
         const result = foundUser.save()
         
-        return res.json(result);
+        return res.json({ 'message': 'Added subjects to user' });
     } catch (err) {
         console.error(err);
-        return res.sendStatus(500);
+        return res.status(500).jso({ 'message': 'Failed to enroll user to given subjects.' });
     }
 }
 

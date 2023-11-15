@@ -1,6 +1,6 @@
-const UnapprovedFaculty = require('../../model/UnapprovedFaculty');
-const ApprovedFaculty   = require('../../model/Faculty');
-const User              = require('../../model/User');
+const UnapprovedFaculty         = require('../../model/UnapprovedFaculty');
+const ApprovedFaculty           = require('../../model/Faculty');
+const { emailDuplicateChecker } = require('../../controllers/email/duplicateController');
 
 const handleNewFaculty = async (req, res) => {
     const {firstname, lastname, empId, email} = req.body;
@@ -10,30 +10,17 @@ const handleNewFaculty = async (req, res) => {
     }
 
     let duplicateUnapproved = await UnapprovedFaculty.findOne({ empId: empId }).exec();
-
     if (duplicateUnapproved) {
         return res.status(409).json({ 'message': `${empId} already submitted for verfication as user: ${duplicateUnapproved.firstname} ${duplicateUnapproved.lastname}.` });
     }
 
-    duplicateUnapproved = await UnapprovedFaculty.findOne({ email: email }).exec();
-    if (duplicateUnapproved) {
-        return res.status(409).json({ 'message': `${email} already submitted for verfication as user: ${duplicateUnapproved.firstname} ${duplicateUnapproved.lastname}.` });
-    }
-
     let duplicateApproved = await ApprovedFaculty.findOne({ empId: empId }).exec();
-    
     if (duplicateApproved) {
         return res.status(409).json({ 'message': `${empId} already registered as user: ${duplicateApproved.firstname} ${duplicateApproved.lastname}.` });
     }
 
-    duplicateApproved = await ApprovedFaculty.findOne({ email: email }).exec();
-    if (duplicateApproved) {
-        return res.status(409).json({ 'message': `${email} already registered for user: ${duplicateApproved.firstname} ${duplicateApproved.lastname}.` });
-    }
-    
-    const duplicateUser = await User.findOne({ email: email }).exec();
-    if (duplicateUser) {
-        return res.status(409).json({ 'message': `User with email: ${duplicateUser.email} already exists.` });
+    if (await emailDuplicateChecker(email)) {
+        return res.status(409).json({ 'message': `${email} already used.` });
     }
 
     try {

@@ -1,7 +1,6 @@
-const User              = require('../../model/User');
-const UnapprovedFaculty = require('../../model/UnapprovedFaculty');
-const ApprovedFaculty   = require('../../model/Faculty');
-const bcrypt            = require('bcrypt'); /* To hash passwords */
+const User                      = require('../../model/User');
+const { emailDuplicateChecker } = require('../../controllers/email/duplicateController');
+const bcrypt                    = require('bcrypt'); /* To hash passwords */
 
 const handleNewUser = async (req, res) => {
     if ( !req?.body?.firstname || !req?.body?.lastname || !req?.body?.username || !req?.body?.password || !req?.body?.email || !req?.body?.roll_no || !req?.body?.branch || !req?.body?.year) {
@@ -13,7 +12,6 @@ const handleNewUser = async (req, res) => {
     /* Check for duplicates in database */
     let duplicate = await User.findOne({ username: username }).exec();
     if (duplicate) {
-        /* HTTP 409: Conflict */
         return res.status(409).json({ 'message': `User with username ${username} already exists.` });
     }
 
@@ -22,21 +20,10 @@ const handleNewUser = async (req, res) => {
         return res.status(409).json({ 'message': `User with roll ${duplicate.rollNo} already exists.` });
     }
 
-    duplicate = await User.findOne({ email: email }).exec();
-    if (duplicate) {
-        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
+    if (await emailDuplicateChecker(email)) {
+        return res.status(409).json({ 'message': `${email} already used.` });
     }
 
-    duplicate = await UnapprovedFaculty.findOne({ email: email }).exec();
-    if (duplicate) {
-        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
-    }
-
-    duplicate = await ApprovedFaculty.findOne({ email: email }).exec();
-    if (duplicate) {
-        return res.status(409).json({ 'message': `User with email: ${duplicate.email} already exists.` });
-    }
-    
     try {
         /* Hash the password */
         const hashedPwd = await bcrypt.hash(password, 10);

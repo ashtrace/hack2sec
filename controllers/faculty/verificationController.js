@@ -38,7 +38,8 @@ const handleVerification = async (req, res) => {
             "lastname": unapprovedFaculty.lastname,
             "empId": unapprovedFaculty.empId,
             "email": unapprovedFaculty.email,
-            "password": hashedPwd
+            "password": hashedPwd,
+            "subject": unapprovedFaculty.subject
         });
 
         /* Debug: Log the verfied faculty */

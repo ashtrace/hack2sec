@@ -27,6 +27,7 @@ const handleUserDashboard = async (req, res) => {
             name: `${foundUser.firstname} ${foundUser.lastname}`,
             username: foundUser.username,
             rank: userRank,
+            points: foundUser.points,
             correctSolves: foundUser.correctSolves,
             incorrectSolves: foundUser.incorrectSolves,
             categoryCounts: categoryCounts,

@@ -1,7 +1,7 @@
 # hack2sec
 A Capture-The-Flag platform created to seamlessly integrate practical cybersecurity exercises into university curricula, thereby reducing the learning curve associated with these activities.
 
-Developed by Aishwarya Raj (backend) and Siddhant Saxena (frontend), for submission as final project of their Bachelors of Technology.
+Developed by [Aishwarya Raj ![Linkedin](https://i.stack.imgur.com/gVE0j.png) ](https://www.linkedin.com/in/0xaishwaryaraj/) and [Siddhant Saxena ![Linkedin](https://i.stack.imgur.com/gVE0j.png) ](https://www.linkedin.com/in/siddhant-saxena/) , for submission as final project of their Bachelors of Technology.
 
 ## Deployment Procedures
 

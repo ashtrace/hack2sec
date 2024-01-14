@@ -1,58 +1,81 @@
 # hack2sec
-Backend to 'Hack2Sec', a Capture-The-Flag platform created to seamlessly integrate practical cybersecurity exercises into university curricula, thereby reducing the learning curve associated with these activities.
+A Capture-The-Flag platform created to seamlessly integrate practical cybersecurity exercises into university curricula, thereby reducing the learning curve associated with these activities.
+
+Developed by Aishwarya Raj (backend) and Siddhant Saxena (frontend), for submission as final project of their Bachelors of Technology.
 
 ## Deployment Procedures
 
-### Dependencies
-- Run the following to install dependencies.
+## Build & Installation
+
+### Environment
+- Install Docker
+- Create docker network
     ```
-    npm i
+    shell~# docker network create hack2sec-backend-network
+    ```
+- Create docker volume for database and file server
+    ```
+    shell~# docker volume create mongo-data
+    shell~# docker volume create minio-challenge-files
     ```
 
-### Database
-- Install mongoDB community edition locally.
-- Create a database named `hack2sec`.
-
-### Environment Variables
-- Create a `.env` file in project directory.
-- Add the following:
+### Database Server
+- Pull Mongo-DB docker image
     ```
-    ACCESS_TOKEN_SECRET=<secret value>
-    REFRESH_TOKEN_SECRET=<secret value>
-    DATABASE_URI=mongodb://localhost:27017/hack2sec?retryWrites=true
-    ```
-    - Obtain secret value for token secrets through:
-        ```
-        node> require('crypto').randomBytes(64).toString('hex')
-        ```
-
-### Deploy
-- Pre-requisite: Start the mongoDB service.
-- To start server
-    ```
-    node server
-    ```
-- To start development server
-    ```
-    npm run dev
+    shell~# docker pull mongo
     ```
 
-## Development Guidlines
+### File Server
+- Pull MinIO docker image
+    ```
+    shell~# docker pull quay.io/minio/minio
+    ```
 
-### Comment & Documentation
-- Always use following comment format.
+### Backend-Server
+- Navigate to backend/package-hack2sec
     ```
-    /* Single line comment */
+    shell~# cd backend/package-hack2sec
+    ```
+- Modify Dockerfile to include your secrets.
+- Build docker image for backend server
+    ```
+    shell~# docker build -t hack2sec-backend-app .
+    ```
 
-    /* Multi
-     * line comment
-     */ 
+### Frontend-Server
+- Navigate to frontend/
     ```
-- Always add 'Debug' comment before debug code segment.
+    shell~# cd frontend/
     ```
-    /* Debug: <description> */
+- Install code dependencies
     ```
-- Always add 'TBD' comment to mark future scope.
+    shell~# npm install
+    shell~# npm install chart.js jwt-decode axios serve
     ```
-    /* TBD: <future scope> */
+
+## Deployment
+- Run database server
+    ```
+    shell~# docker run -d --network hack2sec-backend-network --name hack2sec-mongodb-server -v mongo-data:/data/db -p 27017:27017 mongo
+    ```
+
+- Run file server
+    ```
+    shell~# docker run -d --network hack2sec-backend-network -p 9000:9000 -p 9090:9090 --name hack2sec-minio-server -v minio-challenge-files:/data -e "MINIO_ROOT_USER=admin" -e "MINIO_ROOT_PASSWORD=hack2sec" quay.io/minio/minio server /data/ --console-address ":9090"
+    ```
+
+    - Open `http://localhost:9090/` in web-browser.
+    - Login with username: admin, password: password.
+    - Create a bucket named `hack2sec`
+    - Create a new user with read/write privileges.
+    - Generate their access key pair: access-token and secret-token.
+
+- Run backend server
+    ```
+    shell~# docker run -e MINIO_DEMO_USER_RW_ACCESS_KEY=<minio user access token> -e MINIO_DEMO_USER_RW_SECRET_KEY=<minio secret token> -p 1337:1337 --network hack2sec-backend-network hack2sec-backend-app
+    ```
+
+- Run frontend server
+    ```
+    shell~# npx serve -s build
     ```

@@ -1,0 +1,154 @@
+Common styles for all screen sizes
+.ctf-form12 {
+    background-color: #000;
+    padding: 20px;
+    border: 1px solid #0f0;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    margin: 10px auto; /* Center the form horizontally */
+    color: rgb(218, 224, 218);
+    font-family: 'Courier New', monospace;
+    position: relative; /* Relative positioning for responsive adjustments */
+    margin-top: 100px;
+    /* margin-bottom: 15px; */
+    
+  }
+  
+  .ctf-form12 .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    margin-top: 35px;
+  }
+  
+  .ctf-form12 .form-group {
+    flex: 1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .ctf-form12 .form-group label {
+    flex: 1;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-left: 30px;
+    color: #0f0;
+  }
+  
+  .ctf-form12 input[type="text"],
+  .ctf-form12 textarea,
+  .ctf-form12 input[type="number"],
+  .ctf-form12 select,
+  .ctf-form12 input[type="file"] {
+    flex: 2;
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    border-radius: 10px;
+    font-family: 'Courier New', monospace;
+  }
+  
+  .ctf-form12 .attachment-section {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .ctf-form12 .attachment-section label {
+    font-size: 20px;
+    color: #0f0;
+    margin-right: 10px;
+  }
+  
+  .ctf-form12 .attachment-section input[type="file"] {
+    flex: 1;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #000;
+    color: #0f0;
+    border: 1px solid #0f0;
+    border-radius: 5px;
+  }
+  
+  .ctf-form12 .attachment-section button {
+    background-color: #0f0;
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 20px;
+  }
+  
+  /* Styling for radio buttons */
+  .toggle-button {
+    display: flex;
+    align-items: center;
+    margin-left: 50px;
+  }
+  
+  .toggle-switch-label {
+    font-size: 20px;
+    margin-left: 10px;
+    color: #0f0;
+    cursor: pointer;
+  }
+  
+  .toggle-switch-radio:checked + .toggle-switch-label {
+    font-weight: bold;
+    color: #0f0;
+  }
+  
+  .toggle-switch-radio:not(:checked) + .toggle-switch-label {
+    font-weight: normal;
+    color: inherit;
+  }
+  
+  /* Media Queries for Responsive Design */
+  @media (max-width: 768px) {
+    .ctf-form12 {
+      width: 90%; /* Adjust the width for smaller screens */
+    }
+    .ctf-form12 .form-row {
+      flex-direction: column; /* Stack form rows on top of each other for smaller screens */
+    }
+    .ctf-form12 .form-group {
+      margin-right: 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .ctf-form12 {
+      width: 100%; /* Adjust the width for even smaller screens */
+    }
+    .ctf-form12 .form-group {
+      flex: 1; /* Make form groups take full width on smaller screens */
+    }
+  }
+  
+  .buttons-row {
+    text-align: center; /* Center the buttons horizontally */
+}
+  .buttons-row button {
+    background-color: rgb(255, 255, 255);
+    color: #000;
+    border: 2px solid rgb(2, 1, 12);
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0 10px; /* Optional: add margin between buttons */
+    align-items: center; /* This property is not necessary for buttons, as they are inline elements, but I left it in case you have other elements inside the buttons. */
+}
+
+
+.ctf-form12 h1{
+  margin-left: 20%;
+}
+

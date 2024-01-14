@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <div id="message" style="color: red;"></div>
+
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const requestBody = {
+                username: username,
+                password: password
+            };
+
+            // Make a POST request to the login API
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Assuming the response contains an 'accessToken' field
+                const accessToken = data.accessToken;
+                // Store the accessToken in localStorage or a more secure location
+                localStorage.setItem('accessToken', accessToken);
+                document.getElementById('message').textContent = 'Login successful';
+            })
+            .catch(error => {
+                document.getElementById('message').textContent = 'Login failed. Please check your credentials.';
+            });
+        }
+    </script>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    <button onclick="login()">Login</button>
+</body>
+</html>

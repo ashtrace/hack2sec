@@ -1,0 +1,113 @@
+/* LoginForm.css */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Hide the default body margin and padding, and prevent scrolling */
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background: url('../../public/hacker-animation.gif') no-repeat center center fixed;
+  background-size: cover;
+  color: #00ff00;
+  position: relative;
+}
+
+.login-container .hacker-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../public/hacker-animation.gif') repeat;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.login-container .login-form {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container .login-form h2 {
+  margin-bottom: 20px;
+}
+
+.login-container .login-form input,
+.login-container .login-form button {
+  padding: 15px;
+  margin: 10px;
+  width: 50%;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+.login-container .login-form input[type="text"],
+.login-container .login-form input[type="password"] {
+  background-color: #000;
+  color: #00ff00;
+}
+
+.login-container .login-form button {
+  background-color: #0d9e0d;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-container .login-form button:hover {
+  background-color: #00cc00;
+}
+
+.login-container .project-name-foll {
+  font-size: 72px;
+  font-weight: 700;
+  font-family: 'Times New Roman', sans-serif;
+  color: rgba(226, 226, 226, 0.90);
+  text-align: center;
+  line-height: top;
+  letter-spacing: -0.54px;
+  margin-top: 30px;
+  display: flex;
+  width: 346px;
+  height: 59px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-container .register-buttons {
+  display: flex;
+  flex-direction: row;
+  color: #00ff00;
+  justify-content: center;
+}
+
+.login-container .login-form .register-button {
+  padding: 15px;
+  width: 30%; /* Adjust the width as needed */
+  border:  2px solid #76fc09;
+  border-radius: 10px;
+  font-size: 18px;
+  background-color: #000000; /* Set the background color */
+  color: #dfdfdf; /* Set the text color */
+}
+
+.login-container .login-form .register-button:hover {
+  padding: 15px;
+  width: 30%; /* Adjust the width as needed */
+  border:  5px solid #030700;
+  border-radius: 10px;
+  font-size: 18px;
+  background-color: #dbdfda; /* Set the background color */
+  color: #000000; /* Set the text color */
+}

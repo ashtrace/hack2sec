@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload challenges</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5rem;
+            background-color: #333;
+            color: whitesmoke;
+        }
+
+        input,
+        button {
+            font: inherit;
+            width: max-content;
+        }
+
+        form {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload challenge</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="myFiles" multiple />
+        <button>Submit</button>
+    </form>
+    <h2></h2>
+    <h3></h3>
+    <script>
+        const form = document.getElementById('uploadForm');
+        const sendFiles = async () => {
+            const myFiles = document.getElementById('myFiles').files;
+
+            const formData = new FormData();
+
+            // Create a dictionary where key is filename and value is file itself.
+            Object.keys(myFiles).forEach(key => {
+                formData.append(myFiles.item(key).name, myFiles.item(key))
+            });
+
+            accessToken = localStorage.getItem('accessToken');
+            
+            const response = await fetch('http://127.0.0.1:1337/api/challenges/upload', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            });
+
+            const json = await response.json();
+
+            const h2 = document.querySelector('h2');
+            h2.textContent = `Uploaded: ${json?.filename}`;
+
+            const h3 = document.querySelector('h3');
+            h3.textContent = json?.filename;
+
+            console.log(json)
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Does not reload the page
+            sendFiles();
+        })
+    </script>
+</body>
+</html>

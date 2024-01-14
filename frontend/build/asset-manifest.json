@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f9b7c159.css",
+    "main.js": "/static/js/main.bdb91e37.js",
+    "static/js/27.1419bc9d.chunk.js": "/static/js/27.1419bc9d.chunk.js",
+    "static/media/404.gif": "/static/media/404.bc36a41b896a276c52a7.gif",
+    "static/media/hacktivist_scn03_120315.gif": "/static/media/hacktivist_scn03_120315.9f23e8b5151c071d1524.gif",
+    "static/media/hacker-animation.gif": "/static/media/hacker-animation.7f842d89108e56d26fff.gif",
+    "static/media/bg2.jpeg": "/static/media/bg2.9d30c0ed304c603cf5d5.jpeg",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.f9b7c159.css",
+    "static/js/main.bdb91e37.js"
+  ]
+}

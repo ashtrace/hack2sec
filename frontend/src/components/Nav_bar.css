@@ -1,0 +1,50 @@
+/* Common styles */
+.ctf-nav {
+    display: flex;
+    height: 60px;
+    padding: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    background-color: #000; /* Dark background */
+    position: fixed;
+    top: 0; /* Adjust the top value */
+    left: 0;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.ctf-nav ul {
+    list-style: none;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.ctf-nav li {
+    font-size: 18px;
+    margin-right: 20px;
+}
+
+.ctf-nav a {
+    text-decoration: none;
+    color: rgb(218, 235, 218); /* Green text */
+    text-align: center;
+    font-family: 'Courier New', monospace; /* Monospaced font */
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.ctf-nav a:hover {
+    color: #00cc00; /* Lighter green on hover */
+}
+
+.hack2hec {
+    font-size: 48px;
+    margin-left: 50px; /* Adjust the left margin for space */
+    margin-right: auto; /* Push it to the far left side */
+    color: rgb(218, 235, 218); /* Green text */
+    font-family: 'Courier New', monospace; /* Monospaced font */
+    font-weight: bold;
+}

@@ -1,0 +1,229 @@
+body {
+  font-family: 'Courier New', monospace;
+  background-color: #000;
+  margin: 0;
+  position: relative;
+  margin-top: 50px;
+}
+
+.admin-panel {
+  display: flex;
+  height: 100vh;
+  margin-top: 6%;
+}
+
+.subject-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 5px solid rgb(6, 97, 10);
+  border-radius: 40px;  
+  margin-top: 5px;
+}
+
+.subject-input div {
+  display: flex;
+  flex-direction: row; /* Change the direction to row */
+  align-items: center;
+  margin-bottom: 10px;
+  width: 700px;
+  border: #0f0;
+  
+}
+
+.subject-input label {
+  color: #0f0;
+  font-size: 25px;
+  margin-right: 10px;
+
+}
+
+.subject-input input {
+  background-color: #000;
+  border: 2px solid #0f0;
+  color: #0f0;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 25px;
+  width: 50%; /* Adjust the width as needed */
+  margin-right: 10px; /* Add margin to separate input and label */
+}
+
+.subject-input h2{
+  font-size: 30px;
+  margin-bottom: 10px;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+}
+
+.subject-input button {
+  background-color: rgb(255, 255, 255);
+  color: #000;
+  border: 2px solid rgb(2, 1, 12);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  flex-direction: row;
+}
+
+.subject-input button:hover {
+  background-color: rgb(14, 197, 230);
+}
+
+.admin-left,
+.admin-right {
+  flex: 1;
+  padding: 20px;
+}
+
+.admin-right {
+  background-color: #000;
+  color: #0f0;
+  border-radius: 20px;
+  border: 5px solid rgb(6, 97, 10);
+  margin-right: 20px;
+  margin-top: 50px;
+  height: 700px;
+  
+}
+
+.leaderboard {
+  background-color: #000;
+  border: 5px solid rgb(6, 97, 10);
+  border-radius: 50px;
+  padding: 20px;
+  margin-top: 7px;
+
+}
+
+.leaderboard h2 {
+  color: #0f0;
+  font-size: 24px;
+}
+
+.leaderboard ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+.leaderboard li {
+  font-size: 18px;
+}
+
+.admin-header {
+  font-size: 24px;
+  /* margin-bottom: 20px; */
+}
+
+.admin-section {
+  background-color: #111;
+  padding: 20px;
+  margin: 10px 0;
+  border: 2px solid #0f0;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center; /* Center text content */
+}
+
+
+.button-container {
+  background-color: #111;
+  padding: 20px;
+  margin-top: 20px;
+  border: 2px solid #0f0;
+  border-radius: 20px;
+}
+
+.button-container h2 {
+  color: #0f0;
+  font-size: 24px;
+  /* margin-bottom: 10px; */
+}
+
+button {
+  background-color: rgb(255, 255, 255);
+  color: #000;
+  border: 2px solid rgb(2, 1, 12);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  
+}
+
+button:hover {
+  background-color: rgb(14, 197, 230);
+}
+
+.curved-box {
+  background-color: #111;
+  border: 2px solid #0f0;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 18px;
+}
+
+.total-registered-users,
+.total-challenges,
+.total-submissions {
+  color: #0f0;
+  margin: 10px 0;
+}
+
+/* Media Queries for responsiveness */
+
+@media (max-width: 768px) {
+  .admin-panel {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-left,
+  .admin-right {
+    flex: 1;
+    margin: 0;
+  }
+}
+/* Add these styles to your CSS file */
+
+.popup-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-content {
+  background: transparent;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.popup-close {
+  display: block;
+  align-items: center;
+  margin-left: 50%;
+  /* position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background-color: #ccc;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px; */
+}
+

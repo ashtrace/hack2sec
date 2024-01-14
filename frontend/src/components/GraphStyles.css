@@ -1,0 +1,25 @@
+/* GraphStyles.css */
+/* Style for the graph containers */
+.graphs {
+    display: flex; /* Use flexbox to arrange graphs side by side */
+    justify-content: space-between; /* Distribute space between graphs */
+  }
+  
+  /* Add a margin to create a gap between the graphs */
+  .graph {
+    margin-right: 20px; /* Adjust the margin as needed */
+  }
+  
+  /* Style for the graph canvases */
+  .graph-canvas {
+    /* Your existing styles for the canvases */
+    width: 100%; /* Adjust the width as needed */
+    max-width: 400px; /* Set a maximum width if desired */
+    height: auto; /* Allows the canvas to adjust its height */
+    border: 1px solid #ccc; /* Add a border if desired */
+    border-radius: 8px; /* Add border radius if desired */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow if desired */
+    display: block;
+    margin: 0 auto; /* Center the canvas horizontally */
+  }
+  

@@ -1,0 +1,10 @@
+/* DonutChartStyles.css */
+.donut-chart {
+    width: 10px; /* Adjust the width as needed */
+    height: 10px; /* Adjust the height as needed */
+    margin: 10px; /* Add margin to create spacing between the charts */
+    display: inline-block; /* Display charts side by side */
+  }
+  
+  /* Additional styles can be added as needed */
+  
